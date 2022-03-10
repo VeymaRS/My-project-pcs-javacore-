@@ -9,17 +9,16 @@ public class Client {
         try (Socket socket = new Socket("localhost", 8989);
              Scanner in = new Scanner(System.in);
              BufferedReader ois = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true)
         ) {
             String inputTask;
             while (!socket.isOutputShutdown()) {
                 System.out.println("Client connected to socket");
-                System.out.println("What do you want to do? (input ADD or REMOVE). Input E for exit");
+                System.out.println("What do you want to do? (input ADD TASK or REMOVE TASK). Input E for exit");
                 inputTask = in.nextLine();
-                if (inputTask.equals("ADD") || inputTask.equals("REMOVE")) {
-                    System.out.println("Enter the name of the task");
-                    String inputTaskName = in.nextLine();
-                    out.println("{ \"type\": \"" + inputTask + "\", \"task\": \"" + inputTaskName + "\" }");
+                if (inputTask.startsWith("ADD") || inputTask.startsWith("REMOVE")) {
+                    String[] input = inputTask.split(" ");
+                    out.println("{ \"type\": \"" + input[0] + "\", \"task\": \"" + input[1] + "\" }");
                 } else if(inputTask.equals("E")) {
                     out.println("{ \"type\": \"EXIT\", \"task\": \"EXIT\" }");
                     socket.close();
@@ -27,7 +26,7 @@ public class Client {
                 System.out.println(ois.readLine());
             }
         } catch (Exception err) {
-            System.out.println(err);
+            System.out.println("Socket closed");
         }
     }
 }
