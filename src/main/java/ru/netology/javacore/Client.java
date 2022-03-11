@@ -18,11 +18,22 @@ public class Client {
                 inputTask = in.nextLine();
                 if (inputTask.startsWith("ADD") || inputTask.startsWith("REMOVE")) {
                     String[] input = inputTask.split(" ");
-                    out.println("{ \"type\": \"" + input[0] + "\", \"task\": \"" + input[1] + "\" }");
-                } else if(inputTask.equals("E")) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 1; i < input.length; i++) {
+                        if (i != input.length-1) {
+                            sb.append(input[i])
+                                    .append(" ");
+                        } else {sb.append(input[i]);
+                        }
+                    }
+                    out.println("{ \"type\": \"" + input[0] + "\", \"task\": \"" + sb + "\" }");
+                } else if (inputTask.equals("E")) {
                     out.println("{ \"type\": \"EXIT\", \"task\": \"EXIT\" }");
                     socket.close();
-                } else {continue;}
+                } else {
+                    System.out.println("Incorrect input");
+                    continue;
+                }
                 System.out.println(ois.readLine());
             }
         } catch (Exception err) {
