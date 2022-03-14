@@ -19,17 +19,16 @@ public class TodoServer {
     }
 
     public void start() throws IOException {
-        try (
-                ServerSocket serverSocket = new ServerSocket(port);
-                Socket clientSocket = serverSocket.accept();
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
 
             System.out.println("Starting server at " + port + "...");
 
             String input;
 
             while (true) {
+                Socket clientSocket = serverSocket.accept();
+                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 input = in.readLine();
                 Task task = gson.fromJson(input, Task.class);
                 switch (task.getType()) {
@@ -43,12 +42,6 @@ public class TodoServer {
                         } else {
                             break;
                         }
-                    case "EXIT":
-                        out.println(todos.getAllTasks());
-                        in.close();
-                        out.close();
-                        clientSocket.close();
-                        break;
                 }
                 out.println(todos.getAllTasks());
             }
