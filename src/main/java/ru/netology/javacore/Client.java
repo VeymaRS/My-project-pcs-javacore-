@@ -27,6 +27,8 @@ public class Client {
                     }
                 }
                 out.println("{ \"type\": \"" + input[0] + "\", \"task\": \"" + sb + "\" }");
+            } else {
+                System.out.println("Incorrect input");
             }
             System.out.println(ois.readLine());
         } catch (Exception err) {
