@@ -44,6 +44,8 @@ public class TodoServer {
                         }
                 }
                 out.println(todos.getAllTasks());
+                in.close();
+                out.close();
             }
         } catch (Error err) {
             System.out.println("Stream closed");
